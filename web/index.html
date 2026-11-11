@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="TiendaGaby — moda, tecnología, juguetes y accesorios seleccionados. Envíos a toda Colombia.">
+    <meta name="theme-color" content="#fdfbfb">
+    <title>TiendaGaby — Elegancia y Versatilidad</title>
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Inter', 'sans-serif'] },
+                    colors: {
+                        brand: '#111827',
+                        accent: '#3b82f6',
+                        cream: '#f7f3ec'
+                    },
+                    boxShadow: {
+                        soft: '0 18px 50px -24px rgba(17, 24, 39, 0.35)'
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="text-gray-800 antialiased min-h-screen">
+
+    <a href="#main" class="skip-link">Ir al contenido principal</a>
+
+    <!-- ================= HEADER ================= -->
+    <header class="glass-header sticky top-0 z-40 w-full transition-all duration-300">
+        <div class="container mx-auto px-4 md:px-8 py-4 grid grid-cols-3 items-center">
+
+            <div class="flex items-center">
+                <button type="button" id="filters-toggle"
+                        class="lg:hidden inline-flex items-center gap-2 text-sm font-medium text-gray-700 hover:text-black transition"
+                        aria-expanded="false" aria-controls="filters-panel">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.6"
+                              d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"/>
+                    </svg>
+                    Filtros
+                </button>
+            </div>
+
+            <!-- Logo -->
+            <div class="text-center">
+                <a href="#" class="text-xl sm:text-2xl md:text-3xl font-light tracking-[0.16em] sm:tracking-[0.2em] text-brand">TiendaGaby</a>
+            </div>
+
+            <!-- Cuenta y Carrito -->
+            <div class="flex justify-end items-center gap-6 text-sm font-medium">
+                <a href="#footer" class="hidden sm:inline hover:text-accent transition">Ayuda</a>
+                <button type="button" id="cart-toggle"
+                        class="relative flex items-center hover:text-accent transition group"
+                        aria-haspopup="dialog" aria-controls="cart-sidebar" aria-expanded="false">
+                    <span class="mr-2 hidden md:block">Carrito</span>
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                              d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/>
+                    </svg>
+                    <span id="cart-count"
+                          class="absolute -top-2 -right-2 min-w-[18px] h-[18px] grid place-items-center bg-red-500 text-white text-[10px] font-bold px-1 rounded-full transition-transform">0</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Menú de Navegación Secundario -->
+        <nav class="container mx-auto px-4 pb-4 overflow-x-auto no-scrollbar" aria-label="Navegación principal">
+            <ul class="flex gap-8 justify-center min-w-max text-sm text-gray-600 font-medium">
+                <li><a href="#productos" class="text-black border-b-2 border-black pb-1">Tienda</a></li>
+                <li><a href="#productos" class="hover:text-black pb-1 border-b-2 border-transparent">Novedades</a></li>
+                <li><a href="#productos" class="hover:text-black pb-1 border-b-2 border-transparent">Ofertas</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- ================= MAIN ================= -->
+    <main id="main" class="container mx-auto px-4 md:px-8 py-10">
+
+        <div class="flex flex-col lg:flex-row gap-8">
+
+            <!-- ---------- Barra lateral (filtros) ---------- -->
+            <aside id="filters-panel"
+                   class="hidden lg:block w-full lg:w-1/4 glass-panel rounded-2xl p-6 h-fit lg:sticky lg:top-32"
+                   aria-label="Filtros de productos">
+                <div class="flex justify-between items-center mb-6">
+                    <h2 class="font-semibold text-lg flex items-center">
+                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                  d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"/>
+                        </svg>
+                        Filtros
+                    </h2>
+                    <span id="active-filters-badge"
+                          class="text-xs text-gray-400 bg-white px-2 py-1 rounded-full shadow-sm">1 activo</span>
+                </div>
+
+                <!-- Filtro: Categoría -->
+                <div class="mb-6 border-b border-gray-200/50 pb-6">
+                    <h3 class="font-medium mb-3">Categoría</h3>
+                    <div id="category-filters" class="space-y-2 text-sm text-gray-600">
+                        <!-- Generado por JS -->
+                    </div>
+                </div>
+
+                <!-- Filtro: Precio -->
+                <div class="mb-6 border-b border-gray-200/50 pb-6">
+                    <h3 class="font-medium mb-3">Precio</h3>
+                    <div class="flex items-center gap-2">
+                        <div class="relative w-full">
+                            <span class="absolute left-2 top-2 text-gray-500 text-sm">$</span>
+                            <label for="price-min" class="sr-only">Precio mínimo</label>
+                            <input id="price-min" type="number" min="0" step="1000" value="0" inputmode="numeric"
+                                   class="w-full pl-6 pr-2 py-2 text-sm border border-gray-300 rounded-lg bg-white/50 focus:bg-white focus:outline-none focus:ring-1 focus:ring-black">
+                        </div>
+                        <span class="text-gray-400">–</span>
+                        <div class="relative w-full">
+                            <span class="absolute left-2 top-2 text-gray-500 text-sm">$</span>
+                            <label for="price-max" class="sr-only">Precio máximo</label>
+                            <input id="price-max" type="number" min="0" step="1000" value="450000" inputmode="numeric"
+                                   class="w-full pl-6 pr-2 py-2 text-sm border border-gray-300 rounded-lg bg-white/50 focus:bg-white focus:outline-none focus:ring-1 focus:ring-black">
+                        </div>
+                    </div>
+                    <p id="price-hint" class="mt-2 text-[11px] text-gray-500">Productos entre $ 0 y $ 450.000</p>
+                </div>
+
+                <button type="button" id="clear-filters"
+                        class="w-full text-sm font-medium text-gray-600 hover:text-black border border-gray-300 rounded-xl py-2 transition hover:bg-white/60">
+                    Limpiar filtros
+                </button>
+            </aside>
+
+            <!-- ---------- Grilla de productos ---------- -->
+            <div id="productos" class="w-full lg:w-3/4 scroll-mt-40">
+
+                <!-- Selector de ciudad -->
+                <div class="mb-4 flex items-center justify-end">
+                    <label for="header-city" class="text-sm text-gray-600 flex items-center cursor-pointer">
+                        <svg class="w-4 h-4 mr-1 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                  d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                  d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+                        </svg>
+                        Enviar a:
+                    </label>
+                    <select id="header-city"
+                            class="ml-2 text-sm font-bold text-gray-800 bg-transparent border-b border-gray-300 focus:outline-none focus:border-black cursor-pointer pb-0.5 transition-colors">
+                        <option value="Bogota" selected>Bogotá</option>
+                        <option value="Medellin">Medellín</option>
+                        <option value="Cali">Cali</option>
+                        <option value="Barranquilla">Barranquilla</option>
+                        <option value="Bucaramanga">Bucaramanga</option>
+                        <option value="Pereira">Pereira</option>
+                        <option value="Dosquebradas">Dosquebradas</option>
+                    </select>
+                </div>
+
+                <!-- Buscador -->
+                <div class="mb-6 relative">
+                    <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none z-10">
+                        <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                  d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                        </svg>
+                    </div>
+                    <label for="search" class="sr-only">Buscar productos</label>
+                    <input id="search" type="search" placeholder="Buscar productos en la tienda..."
+                           class="w-full pl-12 pr-4 py-3 text-sm border border-gray-300 rounded-xl bg-white/70 backdrop-blur focus:bg-white focus:outline-none focus:ring-2 focus:ring-black shadow-sm transition">
+                </div>
+
+                <!-- Opciones de vista / Ordenar -->
+                <div class="flex flex-wrap gap-3 justify-between items-center mb-6 text-sm text-gray-600">
+                    <p id="results-count" aria-live="polite">Mostrando <span class="font-bold text-black">0</span> productos</p>
+                    <div class="relative flex items-center bg-white/60 pl-3 rounded-lg border border-gray-200">
+                        <label for="sort" class="whitespace-nowrap hidden sm:inline">Ordenar por:</label>
+                        <select id="sort"
+                                class="appearance-none bg-transparent font-medium text-gray-800 py-1.5 pl-1 pr-8 cursor-pointer focus:outline-none">
+                            <option value="featured">Destacados</option>
+                            <option value="price-asc">Menor precio</option>
+                            <option value="price-desc">Mayor precio</option>
+                            <option value="name">Nombre A–Z</option>
+                        </select>
+                        <svg class="w-4 h-4 absolute right-2 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                        </svg>
+                    </div>
+                </div>
+
+                <!-- Grid principal -->
+                <div id="product-grid" class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6"></div>
+
+                <!-- Estado vacío -->
+                <div id="empty-results" class="hidden text-center py-20">
+                    <div class="w-16 h-16 mx-auto mb-4 rounded-full bg-white/70 border border-gray-200 flex items-center justify-center">
+                        <svg class="w-7 h-7 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.6"
+                                  d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                        </svg>
+                    </div>
+                    <h3 class="font-semibold text-gray-800 mb-1">No encontramos productos</h3>
+                    <p class="text-sm text-gray-500 mb-5">Prueba con otra búsqueda o ajusta los filtros.</p>
+                    <button type="button" data-clear-all
+                            class="bg-black text-white text-sm font-medium px-6 py-2.5 rounded-full hover:bg-gray-800 transition">
+                        Ver todos los productos
+                    </button>
+                </div>
+
+                <!-- Botón Cargar Más -->
+                <div id="load-more-wrap" class="mt-12 flex justify-center">
+                    <button type="button" id="load-more"
+                            class="bg-black text-white px-8 py-3 rounded-full font-medium hover:bg-gray-800 transition shadow-lg hover:shadow-xl disabled:opacity-40 disabled:cursor-not-allowed">
+                        Cargar más productos
+                    </button>
+                </div>
+
+            </div>
+        </div>
+    </main>
+
+    <!-- ================= FOOTER ================= -->
+    <footer id="footer" class="bg-white/80 backdrop-blur-md border-t border-gray-200 mt-20">
+        <div class="container mx-auto px-4 py-12 grid grid-cols-1 md:grid-cols-4 gap-8">
+            <div>
+                <h4 class="text-xl font-light tracking-[0.2em] mb-4">TiendaGaby</h4>
+                <p class="text-sm text-gray-500">Tu tienda versátil de confianza. Proveemos los mejores productos de dropshipping con garantía y calidad.</p>
+            </div>
+            <div>
+                <h4 class="font-semibold mb-4">Ayuda y Soporte</h4>
+                <ul class="text-sm text-gray-500 space-y-2">
+                    <li><a href="#" class="hover:text-black">Preguntas Frecuentes</a></li>
+                    <li><a href="#" class="hover:text-black">Rastrear Pedido</a></li>
+                    <li><a href="#" class="hover:text-black">Devoluciones</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="font-semibold mb-4">Sobre Nosotros</h4>
+                <ul class="text-sm text-gray-500 space-y-2">
+                    <li><a href="#" class="hover:text-black">Nuestra Historia</a></li>
+                    <li><a href="#" class="hover:text-black">Blog</a></li>
+                    <li><a href="#" class="hover:text-black">Contacto</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="font-semibold mb-4">Newsletter</h4>
+                <p class="text-sm text-gray-500 mb-4">Suscríbete y recibe ofertas exclusivas.</p>
+                <form id="newsletter-form" class="flex" novalidate>
+                    <label for="newsletter-email" class="sr-only">Tu email</label>
+                    <input id="newsletter-email" type="email" required placeholder="Tu email"
+                           class="w-full px-3 py-2 text-sm border border-gray-300 rounded-l-lg outline-none focus:border-black">
+                    <button type="submit" class="bg-black text-white px-4 py-2 text-sm rounded-r-lg hover:bg-gray-800 transition">Enviar</button>
+                </form>
+                <p id="newsletter-msg" class="text-[11px] mt-2 hidden"></p>
+            </div>
+        </div>
+        <div class="text-center py-4 border-t border-gray-200 text-xs text-gray-400">
+            &copy; <span id="year">2026</span> TiendaGaby. Todos los derechos reservados.
+        </div>
+    </footer>
+
+    <!-- ================= CARRITO / CHECKOUT ================= -->
+    <div id="cart-overlay" class="fixed inset-0 bg-black/40 z-40 hidden backdrop-blur-sm transition-opacity opacity-0"></div>
+
+    <aside id="cart-sidebar"
+           class="fixed inset-y-0 right-0 z-50 w-full sm:max-w-[1050px] bg-white shadow-2xl transform translate-x-full transition-transform duration-300 flex flex-col"
+           role="dialog" aria-modal="true" aria-labelledby="cart-title" aria-hidden="true" inert>
+
+        <div class="p-5 border-b border-gray-100 flex justify-between items-center bg-white">
+            <h2 id="cart-title" class="text-2xl font-bold text-gray-800">Crear Orden</h2>
+            <button type="button" data-close-cart
+                    class="text-gray-400 hover:text-black transition p-2 rounded-full hover:bg-gray-100"
+                    aria-label="Cerrar carrito">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                </svg>
+            </button>
+        </div>
+
+        <div class="flex-1 overflow-y-auto p-4 sm:p-6 bg-white">
+
+            <div id="empty-cart-msg" class="text-center py-20 text-gray-500">
+                <div class="w-16 h-16 mx-auto mb-4 rounded-full bg-gray-50 border border-gray-200 flex items-center justify-center">
+                    <svg class="w-7 h-7 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                              d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/>
+                    </svg>
+                </div>
+                <p class="font-medium text-gray-700 mb-1">Aún no tienes productos en tu carrito.</p>
+                <p class="text-sm text-gray-400">Agrega productos para crear tu orden.</p>
+                <button type="button" data-close-cart
+                        class="mt-6 bg-black text-white px-6 py-2.5 rounded-full text-sm font-medium hover:bg-gray-800 transition">
+                    Ver productos
+                </button>
+            </div>
+
+            <!-- Formulario de creación de orden -->
+            <form id="checkout-container" class="hidden grid-cols-1 lg:grid-cols-3 gap-8" novalidate>
+
+                <!-- Columna 1: cliente -->
+                <div class="flex flex-col space-y-4">
+                    <h3 class="font-bold text-gray-800 text-lg">Información del cliente:</h3>
+
+                    <div class="grid grid-cols-2 gap-3">
+                        <div>
+                            <label for="first-name" class="sr-only">Nombres</label>
+                            <input id="first-name" name="firstName" type="text" required autocomplete="given-name" placeholder="Nombres"
+                                   class="input-field">
+                            <p class="field-error" data-error-for="first-name"></p>
+                        </div>
+                        <div>
+                            <label for="last-name" class="sr-only">Apellidos</label>
+                            <input id="last-name" name="lastName" type="text" required autocomplete="family-name" placeholder="Apellidos"
+                                   class="input-field">
+                            <p class="field-error" data-error-for="last-name"></p>
+                        </div>
+                    </div>
+
+                    <div class="flex gap-2">
+                        <span class="px-3 py-2.5 border border-gray-300 rounded-md text-sm bg-gray-50 text-gray-700">🇨🇴 +57</span>
+                        <div class="flex-1">
+                            <label for="phone" class="sr-only">Número de teléfono</label>
+                            <input id="phone" name="phone" type="tel" required autocomplete="tel" inputmode="tel" placeholder="Número de teléfono"
+                                   class="input-field">
+                            <p class="field-error" data-error-for="phone"></p>
+                        </div>
+                        <button type="button" id="use-location"
+                                class="px-3 border border-gray-300 rounded-md text-green-600 hover:bg-green-50 transition"
+                                title="Usar mi ubicación" aria-label="Usar mi ubicación">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                                      d="M12 11c0 3.517-1.009 6.799-2.753 9.571m-3.44-2.04l.054-.09A13.916 13.916 0 008 11a4 4 0 118 0c0 1.017-.194 2.027-.547 3m-2.25 5.275c-1.01.928-2.136 1.705-3.328 2.29m0 0a6.002 6.002 0 01-5.63-9.524m0 0a6.002 6.002 0 017.513-1.63M12 11c0-1.657 1.343-3 3-3m0 0c1.657 0 3 1.343 3 3m0 0a6.002 6.002 0 01-5.63 9.524"/>
+                            </svg>
+                        </button>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-3">
+                        <div>
+                            <label for="department" class="sr-only">Departamento</label>
+                            <select id="department" name="department" required class="input-field">
+                                <option value="">Departamento</option>
+                                <option value="Risaralda">Risaralda</option>
+                                <option value="Antioquia">Antioquia</option>
+                                <option value="Cundinamarca">Cundinamarca</option>
+                                <option value="Valle">Valle del Cauca</option>
+                                <option value="Atlantico">Atlántico</option>
+                                <option value="Santander">Santander</option>
+                            </select>
+                            <p class="field-error" data-error-for="department"></p>
+                        </div>
+                        <div>
+                            <label for="city" class="sr-only">Ciudad</label>
+                            <div class="relative">
+                                <select id="city" name="city" required class="input-field appearance-none">
+                                    <option value="">Ciudad</option>
+                                </select>
+                                <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-500">
+                                    <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                                    </svg>
+                                </div>
+                            </div>
+                            <p class="field-error" data-error-for="city"></p>
+                        </div>
+                    </div>
+
+                    <div>
+                        <label for="address" class="sr-only">Dirección y complementos</label>
+                        <input id="address" name="address" type="text" required autocomplete="street-address" placeholder="Dirección y complementos"
+                               class="input-field">
+                        <p class="field-error" data-error-for="address"></p>
+                        <p id="location-status" class="text-[11px] hidden mt-1" role="status"></p>
+                    </div>
+
+                    <div>
+                        <label for="email" class="sr-only">Correo electrónico</label>
+                        <input id="email" name="email" type="email" required autocomplete="email" placeholder="Correo electrónico"
+                               class="input-field">
+                        <p class="field-error" data-error-for="email"></p>
+                    </div>
+
+                    <div>
+                        <label for="store" class="sr-only">Tienda</label>
+                        <select id="store" name="store" class="input-field">
+                            <option>TiendaGaby</option>
+                        </select>
+                    </div>
+
+                    <div class="pt-1">
+                        <label class="flex items-center gap-2 text-sm text-gray-700 cursor-pointer w-fit">
+                            <span class="relative inline-block">
+                                <input id="notes-toggle" type="checkbox" class="peer sr-only">
+                                <span class="block bg-gray-200 w-10 h-6 rounded-full peer-checked:bg-orange-400 transition"></span>
+                                <span class="absolute left-1 top-1 bg-white w-4 h-4 rounded-full transition peer-checked:translate-x-4 pointer-events-none"></span>
+                            </span>
+                            <span class="font-medium">¿Desea agregar notas para el proveedor?</span>
+                        </label>
+                        <label for="notes" class="sr-only">Notas para el proveedor</label>
+                        <textarea id="notes" name="notes" placeholder="Notas para el proveedor"
+                                  class="hidden mt-3 w-full px-3 py-2 border border-gray-300 rounded-md text-sm outline-none h-24 resize-none focus:border-orange-400"></textarea>
+                    </div>
+                </div>
+
+                <!-- Columna 2: transportadora -->
+                <div class="flex flex-col space-y-4 border-t lg:border-t-0 lg:border-l lg:pl-8 border-gray-100 pt-6 lg:pt-0">
+                    <h3 class="font-bold text-gray-800 text-lg">Seleccione una transportadora:</h3>
+
+                    <div class="flex gap-3" role="radiogroup" aria-label="Tipo de recaudo">
+                        <label class="flex-1 border py-3 rounded-md flex items-center justify-center cursor-pointer border-orange-400 bg-orange-50 text-orange-800 text-sm font-medium transition">
+                            <input type="radio" name="recaudo" value="con" checked class="mr-2 accent-orange-500 w-4 h-4"> Con Recaudo
+                        </label>
+                        <label class="flex-1 border border-gray-300 py-3 rounded-md flex items-center justify-center cursor-pointer text-gray-600 text-sm font-medium hover:bg-gray-50 transition">
+                            <input type="radio" name="recaudo" value="sin" class="mr-2 accent-orange-500 w-4 h-4"> Sin Recaudo
+                        </label>
+                    </div>
+
+                    <div id="carrier-placeholder" class="border border-red-200 bg-red-50 text-red-500 text-sm p-3 rounded-md flex items-center">
+                        <svg class="w-5 h-5 mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                  d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                        </svg>
+                        Para cotizar, selecciona ciudad de destino.
+                    </div>
+
+                    <div id="carrier-list" class="space-y-2.5">
+                        <!-- Generado por JS -->
+                    </div>
+
+                    <p class="text-[11px] text-gray-400 leading-relaxed mt-auto">
+                        Los tiempos de entrega son estimados y pueden variar según la transportadora y la ciudad de destino.
+                    </p>
+                </div>
+
+                <!-- Columna 3: resumen -->
+                <div class="flex flex-col space-y-4 border-t lg:border-t-0 lg:border-l lg:pl-8 border-gray-100 pt-6 lg:pt-0">
+                    <h3 class="font-bold text-gray-800 text-lg">Resumen de la orden:</h3>
+
+                    <div class="bg-gray-50/70 p-5 rounded-xl border border-gray-200 flex flex-col h-full">
+                        <div class="flex justify-between font-bold border-b border-gray-200 pb-3 mb-3 text-[13px] text-gray-800">
+                            <span>Producto</span>
+                            <span>Precio de venta</span>
+                        </div>
+
+                        <div id="cart-items-container" class="space-y-3 mb-6 flex-1 max-h-[260px] overflow-y-auto pr-1">
+                            <!-- Items -->
+                        </div>
+
+                        <div class="space-y-3 text-[13px] text-gray-600 border-t border-gray-200 pt-5">
+                            <div class="flex justify-between font-bold text-black text-base mb-3">
+                                <span>Total a recaudar:</span>
+                                <span id="summary-total-recaudar">$ 0</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span>Precio proveedor:</span>
+                                <span id="summary-supplier">$ 0</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span>Precio de envío:</span>
+                                <span id="summary-shipping">$ 0</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span>Comisión de la plataforma:</span>
+                                <span id="summary-commission">$ 0</span>
+                            </div>
+                            <div class="flex justify-between text-[#2ecc71] font-bold mt-3 pt-3 border-t border-gray-200">
+                                <span>Ganancias</span>
+                                <span id="summary-profit">$ 0</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="flex space-x-3 mt-2">
+                        <button type="button" data-close-cart
+                                class="w-1/3 border border-gray-300 text-gray-700 py-3 rounded-lg font-bold hover:bg-gray-50 transition text-sm">
+                            Cancelar
+                        </button>
+                        <button id="btn-checkout" type="submit"
+                                class="w-2/3 bg-[#ebb475] text-white py-3 rounded-lg font-bold hover:bg-[#dca465] transition shadow-md disabled:bg-gray-300 disabled:shadow-none disabled:cursor-not-allowed flex items-center justify-center text-sm"
+                                disabled>
+                            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                      d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"/>
+                            </svg>
+                            Enviar al cliente
+                        </button>
+                    </div>
+                </div>
+            </form>
+
+            <!-- Mensaje de éxito -->
+            <div id="success-message" class="hidden flex-col items-center justify-center text-center py-20 space-y-4">
+                <div class="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center text-green-500 mb-4">
+                    <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/>
+                    </svg>
+                </div>
+                <h3 class="text-2xl font-bold text-gray-900">¡Orden Creada Exitosamente!</h3>
+                <p class="text-gray-500 max-w-md">Tu pedido <span id="order-number" class="font-semibold text-gray-700"></span> ha sido registrado con los datos de envío proporcionados. Pronto se enviará al cliente.</p>
+                <button type="button" id="back-to-store"
+                        class="mt-6 bg-black text-white px-6 py-2.5 rounded-lg font-medium hover:bg-gray-800 transition">
+                    Volver a la tienda
+                </button>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Notificación Toast -->
+    <div id="toast" class="fixed bottom-5 right-5 z-[60] bg-white/90 backdrop-blur border border-gray-100 shadow-2xl rounded-2xl p-4 flex items-center space-x-3 transform translate-y-20 opacity-0 transition-all duration-300 pointer-events-none"
+         role="status" aria-live="polite">
+        <div id="toast-icon" class="w-10 h-10 rounded-full bg-green-100 text-green-600 flex items-center justify-center flex-shrink-0">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+            </svg>
+        </div>
+        <div>
+            <p id="toast-title" class="font-semibold text-gray-900 text-sm">¡Añadido al carrito!</p>
+            <p id="toast-text" class="text-xs text-gray-500">El producto se agregó exitosamente.</p>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
